@@ -1,53 +1,12 @@
 version: "1.0"
-app: "my-service-api"
-domain: "api.example.com"
+app: "demo-app"
 
-# 1. أوامر البناء (تنفذ تلقائياً قبل التشغيل)
-build:
-  - "bun install --frozen-lockfile"
-  - "bun run build"
-
-# 2. تشغيل الحاوية (Docker / Docker Compose)
-docker:
-  enabled: true
-  use_compose: false
-  dockerfile: "Dockerfile"
-  ports:
-    - "3000:3000"
+run:
+  command: "node server.js"
   env:
-    NODE_ENV: "production"
+    PORT: "3000"
 
-# 3. تشغيل قاعدة بيانات معزولة بنقرة واحدة وحقن DATABASE_URL تلقائياً
-database:
-  type: "postgres"        # postgres | mysql | redis | mongodb
-  name: "app_db"
-  user: "postgres"
-  password: "super_secure_password"
-  port: 5432
-  persist: true          # الحفاظ على البيانات عبر Volume دائم
-
-# 4. النسخ الاحتياطي التلقائي (سحابي S3 / R2 أو محلي)
-backup:
-  enabled: true
-  storage: "s3"          # local | s3 | r2 | minio
-  schedule: "0 3 * * *"  # كل يوم الساعة 3 فجراً
-  bucket: "my-backups-bucket"
-  endpoint: "https://s3.eu-central-1.amazonaws.com"
-  access_key: "YOUR_ACCESS_KEY"
-  secret_key: "YOUR_SECRET_KEY"
-  retention_days: 14
-
-# 5. بيئات المعاينة للفروع (Branch Previews)
-preview:
-  enabled: true
-  base_port: 4000        # يتم حجز بورت ديناميكي لكل فرع (مثال: staging -> 4125)
-
-# 6. فحص الصحة قبل تحويل الترافيك (Zero-Downtime Healthcheck)
 healthcheck:
-  path: "/healthz"
   port: 3000
-  timeout_seconds: 30
-  interval_seconds: 2
-
-# 7. عدد الإصدارات المحتفظ بها للتراجع السريع
-retention: 5
+  path: "/"
+  timeout_seconds: 15
